@@ -261,12 +261,20 @@ public class TouchInputHandler {
         MainActivity.getInstance().setExternalKeyboardConnected(externalKeyboardAvailable.get());
     }
 
-    boolean isDexEvent(MotionEvent event) {
-        int SOURCE_DEX = InputDevice.SOURCE_MOUSE | InputDevice.SOURCE_TOUCHSCREEN;
-        return ((event.getSource() & SOURCE_DEX) == SOURCE_DEX)
-                && ((event.getSource() & InputDevice.SOURCE_TOUCHPAD) != InputDevice.SOURCE_TOUCHPAD)
-                && (event.getToolType(event.getActionIndex()) == MotionEvent.TOOL_TYPE_FINGER);
+//    boolean isDexEvent(MotionEvent event) {
+//        int SOURCE_DEX = InputDevice.SOURCE_MOUSE | InputDevice.SOURCE_TOUCHSCREEN;
+//        return ((event.getSource() & SOURCE_DEX) == SOURCE_DEX)
+//                && ((event.getSource() & InputDevice.SOURCE_TOUCHPAD) != InputDevice.SOURCE_TOUCHPAD)
+//                && (event.getToolType(event.getActionIndex()) == MotionEvent.TOOL_TYPE_FINGER);
+//    }
+
+    Boolean isDexEvent(MotionEvent event) {
+        // 레노버 키보드 커버 터치패드 대응을 위해 조건 완화
+        // SOURCE_TOUCHSCREEN 및 TOOL_TYPE_FINGER(손가락) 검사 제거
+        return ((event.getSource() & InputDevice.SOURCE_MOUSE) == InputDevice.SOURCE_MOUSE)
+                && ((event.getSource() & InputDevice.SOURCE_TOUCHPAD) != InputDevice.SOURCE_TOUCHPAD);
     }
+
 
     public boolean handleTouchEvent(View view0, View view, MotionEvent event) {
         // Regular touchpads and Dex touchpad (in captured mode) send events as finger too,
